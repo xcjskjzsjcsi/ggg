@@ -1,0 +1,3371 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LangGraph",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/assistants": {
+      "post": {
+        "tags": ["assistants/create"],
+        "summary": "Create Assistant",
+        "description": "Create an assistant.",
+        "operationId": "create_assistant_assistants_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assistants/search": {
+      "post": {
+        "tags": ["assistants/manage"],
+        "summary": "Search Assistants",
+        "description": "List assistants.",
+        "operationId": "search_assistants_assistants_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Assistant"
+                  },
+                  "type": "array",
+                  "title": "Response Search Assistants Assistants Search Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assistants/{assistant_id}": {
+      "get": {
+        "tags": ["assistants/manage"],
+        "summary": "Get Assistant",
+        "description": "Get an assistant by ID.",
+        "operationId": "get_assistant_assistants__assistant_id__get",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id",
+              "description": "The ID of the assistant."
+            },
+            "name": "assistant_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["assistants/manage"],
+        "summary": "Delete Assistant",
+        "description": "Delete an assistant by ID.",
+        "operationId": "delete_assistant_assistants__assistant_id__delete",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id",
+              "description": "The ID of the assistant."
+            },
+            "name": "assistant_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["assistants/manage"],
+        "summary": "Patch Assistant",
+        "description": "Update an assistant.",
+        "operationId": "patch_assistant_assistants__assistant_id__patch",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id",
+              "description": "The ID of the assistant."
+            },
+            "name": "assistant_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssistantPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assistants/{assistant_id}/graph": {
+      "get": {
+        "tags": ["assistants/manage"],
+        "summary": "Get Assistant Graph",
+        "description": "Get an assistant by ID.",
+        "operationId": "get_assistant_graph_assistants__assistant_id__graph_get",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id",
+              "description": "The ID of the assistant."
+            },
+            "name": "assistant_id",
+            "in": "path"
+          },
+          {
+            "description": "Include graph representation of subgraphs. If an integer value is provided, only subgraphs with a depth less than or equal to the value will be included.",
+            "required": false,
+            "schema": {
+              "oneOf": [{ "type": "boolean" }, { "type": "integer" }],
+              "title": "Xray",
+              "default": false,
+              "description": "Include graph representation of subgraphs. If an integer value is provided, only subgraphs with a depth less than or equal to the value will be included."
+            },
+            "name": "xray",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "items": {
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "type": "object",
+                  "title": "Response Get Assistant Graph Assistants  Assistant Id  Graph Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assistants/{assistant_id}/subgraphs": {
+      "get": {
+        "tags": ["assistants/manage"],
+        "summary": "Get Assistant Subgraphs",
+        "description": "Get an assistant's subgraphs.",
+        "operationId": "get_assistant_subgraphs_assistants__assistant_id__subgraphs_get",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id"
+            },
+            "name": "assistant_id",
+            "in": "path"
+          },
+          {
+            "description": "Recursively retrieve subgraphs of subgraphs.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "Recurse",
+              "default": false
+            },
+            "name": "recurse",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subgraphs"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assistants/{assistant_id}/subgraphs/{namespace}": {
+      "get": {
+        "tags": ["assistants/manage"],
+        "summary": "Get Assistant Subgraphs by Namespace",
+        "description": "Get an assistant's subgraphs filtered by namespace.",
+        "operationId": "get_assistant_subgraphs_assistants__assistant_id__subgraphs__namespace__get",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id"
+            },
+            "name": "assistant_id",
+            "in": "path"
+          },
+          {
+            "description": "Namespace of the subgraph to filter by.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Namespace"
+            },
+            "name": "namespace",
+            "in": "path"
+          },
+          {
+            "description": "Recursively retrieve subgraphs of subgraphs.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "Recurse",
+              "default": false
+            },
+            "name": "recurse",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subgraphs"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assistants/{assistant_id}/schemas": {
+      "get": {
+        "tags": ["assistants/manage"],
+        "summary": "Get Assistant Schemas",
+        "description": "Get an assistant by ID.",
+        "operationId": "get_assistant_schemas_assistants__assistant_id__schemas_get",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id",
+              "description": "The ID of the assistant."
+            },
+            "name": "assistant_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphSchema"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assistants/{assistant_id}/versions": {
+      "post": {
+        "tags": ["assistants/manage"],
+        "summary": "Get Assistant Versions",
+        "description": "Get all versions of an assistant.",
+        "operationId": "get_assistant_versions_assistants__assistant_id__versions_get",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id",
+              "description": "The ID of the assistant."
+            },
+            "name": "assistant_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Assistant"
+                  },
+                  "type": "array",
+                  "title": "Response Search Assistants Assistants Search Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/assistants/{assistant_id}/change_version": {
+      "post": {
+        "tags": ["assistants/manage"],
+        "summary": "Change Assistant Version",
+        "description": "Change the version of an assistant.",
+        "operationId": "change_assistant_version__assistant_id__change_version__version_post",
+        "parameters": [
+          {
+            "description": "The ID of the assistant.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assistant Id",
+              "description": "The ID of the assistant."
+            },
+            "name": "assistant_id",
+            "in": "path"
+          },
+          {
+            "description": "The version to change to.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version",
+              "description": "The version of the assistant to change to."
+            },
+            "name": "version",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads": {
+      "post": {
+        "tags": ["threads/create"],
+        "summary": "Create Thread",
+        "description": "Create a thread.",
+        "operationId": "create_thread_threads_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/search": {
+      "post": {
+        "tags": ["threads/manage"],
+        "summary": "Search Threads",
+        "description": "List threads.",
+        "operationId": "search_threads_threads_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Thread"
+                  },
+                  "type": "array",
+                  "title": "Response Search Threads Threads Search Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/state": {
+      "get": {
+        "tags": ["threads/state"],
+        "summary": "Get Latest Thread State",
+        "description": "Get state for a thread.",
+        "operationId": "get_latest_thread_state_threads__thread_id__state_get",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["threads/state"],
+        "summary": "Update Thread State",
+        "description": "Add state to a thread.",
+        "operationId": "update_thread_state_threads__thread_id__state_post",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadStateUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadStateUpdateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/state/checkpoint": {
+      "post": {
+        "tags": ["threads/state"],
+        "summary": "Get Thread State At Checkpoint",
+        "description": "Get state for a thread at a specific checkpoint.",
+        "operationId": "post_thread_state_at_checkpoint_threads__thread_id__state__checkpoint_id__get",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadStateCheckpointRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadState"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/history": {
+      "get": {
+        "tags": ["threads/state"],
+        "summary": "Get Thread History",
+        "description": "Get all past states for a thread.",
+        "operationId": "get_thread_history_threads__thread_id__history_get",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Limit",
+              "default": 10
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Before"
+            },
+            "name": "before",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ThreadState"
+                  },
+                  "type": "array",
+                  "title": "Response Get Thread History Threads  Thread Id  History Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["threads/state"],
+        "summary": "Get Thread History Post",
+        "description": "Get all past states for a thread.",
+        "operationId": "get_thread_history_post_threads__thread_id__history_post",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadStateSearch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ThreadState"
+                  },
+                  "type": "array",
+                  "title": "Response Get Thread History Post Threads  Thread Id  History Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}": {
+      "get": {
+        "tags": ["threads/manage"],
+        "summary": "Get Thread",
+        "description": "Get a thread by ID.",
+        "operationId": "get_thread_threads__thread_id__get",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["threads/manage"],
+        "summary": "Delete Thread",
+        "description": "Delete a thread by ID.",
+        "operationId": "delete_thread_threads__thread_id__delete",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["threads/manage"],
+        "summary": "Patch Thread",
+        "description": "Update a thread.",
+        "operationId": "patch_thread_threads__thread_id__patch",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Thread"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/runs": {
+      "get": {
+        "tags": ["runs/manage"],
+        "summary": "List Runs",
+        "description": "List runs for a thread.",
+        "operationId": "list_runs_http_threads__thread_id__runs_get",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Limit",
+              "default": 10
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Offset",
+              "default": 0
+            },
+            "name": "offset",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Run"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Create Background Run",
+        "description": "Create a run, return immediately.",
+        "operationId": "create_run_threads__thread_id__runs_post",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreateStateful"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/runs/crons": {
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Create Thread Cron",
+        "description": "Create a cron to schedule runs on a thread.",
+        "operationId": "create_thread_cron_threads__thread_id__runs_crons_post",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CronCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cron"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/runs/stream": {
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Create Streaming Run",
+        "description": "Create a run, stream the output.",
+        "operationId": "stream_run_threads__thread_id__runs_stream_post",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreateStateful"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/runs/wait": {
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Create Run and Get Output",
+        "description": "Create a run, return the final output.",
+        "operationId": "wait_run_threads__thread_id__runs_wait_post",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreateStateful"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/runs/{run_id}": {
+      "get": {
+        "tags": ["runs/manage"],
+        "summary": "Get Run",
+        "description": "Get a run by ID.",
+        "operationId": "get_run_http_threads__thread_id__runs__run_id__get",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the run.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id",
+              "description": "The ID of the run."
+            },
+            "name": "run_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Run"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["runs/manage"],
+        "summary": "Delete Run",
+        "description": "Delete a run by ID.",
+        "operationId": "delete_run_threads__thread_id__runs__run_id__delete",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the run.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id",
+              "description": "The ID of the run."
+            },
+            "name": "run_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/runs/{run_id}/join": {
+      "get": {
+        "tags": ["runs/manage"],
+        "summary": "Join Run",
+        "description": "Wait for a run to finish.",
+        "operationId": "join_run_http_threads__thread_id__runs__run_id__join_get",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the run.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id",
+              "description": "The ID of the run."
+            },
+            "name": "run_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/runs/{run_id}/stream": {
+      "get": {
+        "tags": ["runs/manage"],
+        "summary": "Join Run Stream",
+        "description": "Join a run stream. This endpoint streams output in real-time from a run similar to the /threads/__THREAD_ID__/runs/stream endpoint. Only output produced after this endpoint is called will be streamed.",
+        "operationId": "stream_run_http_threads__thread_id__runs__run_id__join_get",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the run.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id",
+              "description": "The ID of the run."
+            },
+            "name": "run_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/threads/{thread_id}/runs/{run_id}/cancel": {
+      "post": {
+        "tags": ["runs/manage"],
+        "summary": "Cancel Run",
+        "operationId": "cancel_run_http_threads__thread_id__runs__run_id__cancel_post",
+        "parameters": [
+          {
+            "description": "The ID of the thread.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Thread Id",
+              "description": "The ID of the thread."
+            },
+            "name": "thread_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the run.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id",
+              "description": "The ID of the run."
+            },
+            "name": "run_id",
+            "in": "path"
+          },
+          {
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "Wait",
+              "default": false
+            },
+            "name": "wait",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/crons": {
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Create Cron",
+        "description": "Create a cron to schedule runs on new threads.",
+        "operationId": "create_cron_runs_crons_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CronCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cron"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/crons/search": {
+      "post": {
+        "tags": ["crons/search"],
+        "summary": "Search Crons",
+        "description": "Search all active crons",
+        "operationId": "search_crons_runs_crons_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CronSearch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Cron"
+                  },
+                  "type": "array",
+                  "title": "Response Search Crons Search Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/stream": {
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Stream Run in new Thread",
+        "description": "Create a run in a new thread, stream the output.",
+        "operationId": "stream_run_stateless_runs_stream_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreateStateless"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/wait": {
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Create Run in new Thread and Get Output",
+        "description": "Create a run in a new thread, return the final output.",
+        "operationId": "wait_run_stateless_runs_wait_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreateStateless"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs": {
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Create Background Run in new Thread",
+        "description": "Create a run in a new thread, return immediately.",
+        "operationId": "run_stateless_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreateStateless"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/batch": {
+      "post": {
+        "tags": ["runs/create"],
+        "summary": "Create Run Batch",
+        "description": "Create a batch of runs in new threads, return immediately.",
+        "operationId": "run_batch_stateless_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunBatchCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runs/crons/{cron_id}": {
+      "delete": {
+        "tags": ["runs/manage"],
+        "summary": "Delete Cron",
+        "description": "Delete a cron by ID.",
+        "operationId": "delete_cron_runs_crons__cron_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Cron Id"
+            },
+            "name": "cron_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/store/items": {
+      "put": {
+        "tags": ["store/manage"],
+        "summary": "Store or update an item.",
+        "operationId": "put_item",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StorePutRequest" }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["store/manage"],
+        "summary": "Delete an item.",
+        "operationId": "delete_item",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StoreDeleteRequest" }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["store/manage"],
+        "summary": "Retrieve a single item.",
+        "operationId": "get_item",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Item" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/store/items/search": {
+      "post": {
+        "tags": ["store/manage"],
+        "summary": "Search for items within a namespace prefix.",
+        "operationId": "search_items",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StoreSearchRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SearchItemsResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/store/namespaces": {
+      "post": {
+        "tags": ["store/manage"],
+        "summary": "List namespaces with optional match conditions.",
+        "operationId": "list_namespaces",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StoreListNamespacesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListNamespaceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Assistant": {
+        "properties": {
+          "assistant_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Assistant Id"
+          },
+          "graph_id": {
+            "type": "string",
+            "title": "Graph Id"
+          },
+          "config": {
+            "properties": {
+              "tags": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Tags"
+              },
+              "recursion_limit": {
+                "type": "integer",
+                "title": "Recursion Limit"
+              },
+              "configurable": {
+                "type": "object",
+                "title": "Configurable"
+              }
+            },
+            "type": "object",
+            "title": "Config"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "name": {
+            "type": "string",
+            "title": "Assistant Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "assistant_id",
+          "graph_id",
+          "config",
+          "created_at",
+          "updated_at",
+          "metadata"
+        ],
+        "title": "Assistant"
+      },
+      "AssistantCreate": {
+        "properties": {
+          "assistant_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Assistant Id",
+            "description": "The ID of the assistant. If not provided, an ID is generated."
+          },
+          "graph_id": {
+            "type": "string",
+            "title": "Graph Id",
+            "description": "The graph to use."
+          },
+          "config": {
+            "type": "object",
+            "title": "Config",
+            "description": "The assistant config."
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata for the assistant."
+          }
+        },
+        "type": "object",
+        "required": ["graph_id"],
+        "title": "AssistantCreate",
+        "description": "Payload for creating an assistant."
+      },
+      "AssistantPatch": {
+        "properties": {
+          "graph_id": {
+            "type": "string",
+            "title": "Graph Id",
+            "description": "The graph to use."
+          },
+          "config": {
+            "type": "object",
+            "title": "Config",
+            "description": "The assistant config."
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata to merge with existing assistant metadata."
+          },
+          "name": {
+            "type": "string",
+            "title": "Assistant Name",
+            "description": "The assistant name."
+          }
+        },
+        "type": "object",
+        "title": "AssistantPatch",
+        "description": "Payload for updating an assistant."
+      },
+      "AssistantVersionChange": {
+        "properties": {
+          "version": {
+            "type": "integer",
+            "title": "Version",
+            "description": "The assistant version."
+          }
+        },
+        "type": "object",
+        "title": "AssistantVersionChange",
+        "description": "Payload for changing the version of an assistant."
+      },
+      "Config": {
+        "properties": {
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          },
+          "recursion_limit": {
+            "type": "integer",
+            "title": "Recursion Limit"
+          },
+          "configurable": {
+            "type": "object",
+            "title": "Configurable"
+          }
+        },
+        "type": "object",
+        "title": "Config"
+      },
+      "Cron": {
+        "properties": {
+          "cron_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Cron Id"
+          },
+          "thread_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Thread Id"
+          },
+          "end_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End Time"
+          },
+          "schedule": {
+            "type": "string",
+            "title": "Schedule"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "payload": {
+            "type": "object",
+            "title": "Payload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cron_id",
+          "thread_id",
+          "end_time",
+          "schedule",
+          "created_at",
+          "updated_at",
+          "payload"
+        ],
+        "title": "Cron"
+      },
+      "CronCreate": {
+        "properties": {
+          "assistant_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Assistant Id"
+          },
+          "checkpoint_id": {
+            "type": "string",
+            "title": "Checkpoint Id"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "object"
+              }
+            ],
+            "title": "Input"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata for the run."
+          },
+          "config": {
+            "properties": {
+              "tags": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Tags"
+              },
+              "recursion_limit": {
+                "type": "integer",
+                "title": "Recursion Limit"
+              },
+              "configurable": {
+                "type": "object",
+                "title": "Configurable"
+              }
+            },
+            "type": "object",
+            "title": "Config"
+          },
+          "webhook": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Webhook"
+          },
+          "interrupt_before": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["*"]
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Interrupt Before"
+          },
+          "interrupt_after": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["*"]
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Interrupt After"
+          },
+          "multitask_strategy": {
+            "type": "string",
+            "enum": ["reject", "rollback", "interrupt", "enqueue"],
+            "title": "Multitask Strategy",
+            "default": "reject"
+          }
+        },
+        "type": "object",
+        "required": ["assistant_id", "schedule"],
+        "title": "CronCreate",
+        "description": "Payload for creating a cron."
+      },
+      "CronSearch": {
+        "properties": {
+          "assistant_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Assistant Id"
+          },
+          "thread_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Thread Id"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Maximum number to return.",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "description": "Offset to start from.",
+            "default": 0,
+            "minimum": 0
+          }
+        },
+        "type": "object",
+        "required": [],
+        "title": "CronSearch",
+        "description": "Payload for listing crons"
+      },
+      "GraphSchema": {
+        "properties": {
+          "graph_id": {
+            "type": "string",
+            "title": "Graph Id"
+          },
+          "input_schema": {
+            "type": "object",
+            "title": "Input Schema"
+          },
+          "output_schema": {
+            "type": "object",
+            "title": "Input Schema"
+          },
+          "state_schema": {
+            "type": "object",
+            "title": "State Schema"
+          },
+          "config_schema": {
+            "type": "object",
+            "title": "Config Schema"
+          }
+        },
+        "type": "object",
+        "required": ["graph_id", "state_schema", "config_schema"],
+        "title": "GraphSchema"
+      },
+      "GraphSchemaNoId": {
+        "properties": {
+          "input_schema": {
+            "type": "object",
+            "title": "Input Schema"
+          },
+          "output_schema": {
+            "type": "object",
+            "title": "Input Schema"
+          },
+          "state_schema": {
+            "type": "object",
+            "title": "State Schema"
+          },
+          "config_schema": {
+            "type": "object",
+            "title": "Config Schema"
+          }
+        },
+        "type": "object",
+        "required": ["input_schema", "output_schema", "state_schema", "config_schema"],
+        "title": "GraphSchemaNoId"
+      },
+      "Subgraphs": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/GraphSchemaNoId"
+        },
+        "title": "Subgraphs",
+        "description": "Map of graph name to graph schema metadata (`input_schema`, `output_schema`, `state_schema`, `config_schema`)."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Run": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Run Id"
+          },
+          "thread_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Thread Id"
+          },
+          "assistant_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Assistant Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "error", "success", "timeout", "interrupted"],
+            "title": "Status"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata"
+          },
+          "kwargs": {
+            "type": "object",
+            "title": "Kwargs"
+          },
+          "multitask_strategy": {
+            "type": "string",
+            "enum": ["reject", "rollback", "interrupt", "enqueue"],
+            "title": "Multitask Strategy"
+          }
+        },
+        "type": "object",
+        "required": [
+          "run_id",
+          "thread_id",
+          "assistant_id",
+          "created_at",
+          "updated_at",
+          "status",
+          "metadata",
+          "kwargs",
+          "multitask_strategy"
+        ],
+        "title": "Run"
+      },
+      "RunCreateStateful": {
+        "properties": {
+          "assistant_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "title": "Assistant Id"
+              },
+              {
+                "type": "string",
+                "title": "Graph Id"
+              }
+            ]
+          },
+          "checkpoint_id": {
+            "type": "string",
+            "title": "Checkpoint Id"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata for the run."
+          },
+          "config": {
+            "properties": {
+              "tags": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Tags"
+              },
+              "recursion_limit": {
+                "type": "integer",
+                "title": "Recursion Limit"
+              },
+              "configurable": {
+                "type": "object",
+                "title": "Configurable"
+              }
+            },
+            "type": "object",
+            "title": "Config"
+          },
+          "webhook": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Webhook"
+          },
+          "interrupt_before": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["*"]
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Interrupt Before"
+          },
+          "interrupt_after": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["*"]
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Interrupt After"
+          },
+          "stream_mode": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "values",
+                    "messages",
+                    "updates",
+                    "events",
+                    "debug",
+                    "custom"
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "values",
+                  "messages",
+                  "updates",
+                  "events",
+                  "debug",
+                  "custom"
+                ]
+              }
+            ],
+            "title": "Stream Mode",
+            "default": ["values"]
+          },
+          "on_disconnect": {
+            "type": "string",
+            "enum": ["cancel", "continue"],
+            "title": "On Disconnect",
+            "default": "cancel"
+          },
+          "feedback_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Feedback Keys"
+          },
+          "multitask_strategy": {
+            "type": "string",
+            "enum": ["reject", "rollback", "interrupt", "enqueue"],
+            "title": "Multitask Strategy",
+            "default": "reject"
+          },
+          "after_seconds": {
+            "type": "integer",
+            "title": "After Seconds",
+            "description": "Number of seconds to wait before starting the run."
+          }
+        },
+        "type": "object",
+        "required": ["assistant_id"],
+        "title": "RunCreateStateful",
+        "description": "Payload for creating a run."
+      },
+      "RunBatchCreate": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/RunCreateStateless"
+        },
+        "minItems": 1,
+        "title": "RunBatchCreate",
+        "description": "Payload for creating a batch of runs."
+      },
+      "RunCreateStateless": {
+        "properties": {
+          "assistant_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "title": "Assistant Id"
+              },
+              {
+                "type": "string",
+                "title": "Graph Id"
+              }
+            ]
+          },
+          "input": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata for the run."
+          },
+          "config": {
+            "properties": {
+              "tags": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Tags"
+              },
+              "recursion_limit": {
+                "type": "integer",
+                "title": "Recursion Limit"
+              },
+              "configurable": {
+                "type": "object",
+                "title": "Configurable"
+              }
+            },
+            "type": "object",
+            "title": "Config"
+          },
+          "webhook": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Webhook"
+          },
+          "interrupt_before": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["*"]
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Interrupt Before"
+          },
+          "interrupt_after": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": ["*"]
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Interrupt After"
+          },
+          "stream_mode": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "values",
+                    "messages",
+                    "updates",
+                    "events",
+                    "debug",
+                    "custom"
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "values",
+                  "messages",
+                  "updates",
+                  "events",
+                  "debug",
+                  "custom"
+                ]
+              }
+            ],
+            "title": "Stream Mode",
+            "default": ["values"]
+          },
+          "feedback_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Feedback Keys"
+          },
+          "on_completion": {
+            "type": "string",
+            "enum": ["delete", "keep"],
+            "title": "On Completion",
+            "default": "delete"
+          },
+          "on_disconnect": {
+            "type": "string",
+            "enum": ["cancel", "continue"],
+            "title": "On Disconnect",
+            "default": "cancel"
+          },
+          "after_seconds": {
+            "type": "integer",
+            "title": "After Seconds",
+            "description": "Number of seconds to wait before starting the run."
+          }
+        },
+        "type": "object",
+        "required": ["assistant_id"],
+        "title": "RunCreateStateless",
+        "description": "Payload for creating a streaming run."
+      },
+      "SearchRequest": {
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata to search for."
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Maximum number to return.",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "description": "Offset to start from.",
+            "default": 0,
+            "minimum": 0
+          }
+        },
+        "type": "object",
+        "title": "SearchRequest",
+        "description": "Payload for listing runs."
+      },
+      "AssistantSearchRequest": {
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata to search for."
+          },
+          "graph_id": {
+            "type": "string",
+            "title": "Graph Id",
+            "description": "Filter by graph ID."
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Maximum number to return.",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "description": "Offset to start from.",
+            "default": 0,
+            "minimum": 0
+          }
+        },
+        "type": "object",
+        "title": "SearchRequest",
+        "description": "Payload for listing assistants."
+      },
+      "AssistantVersionsSearchRequest": {
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata to search for."
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Maximum number to return.",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "description": "Offset to start from.",
+            "default": 0,
+            "minimum": 0
+          }
+        },
+        "type": "object",
+        "title": "SearchRequest",
+        "description": "Payload for listing assistant versions."
+      },
+      "ThreadSearchRequest": {
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata to filter on."
+          },
+          "values": {
+            "type": "object",
+            "title": "Values",
+            "description": "State values to filter on."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["idle", "busy", "interrupted", "error"],
+            "title": "Status",
+            "description": "Filter by thread status."
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "Maximum number to return.",
+            "default": 10,
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset",
+            "description": "Offset to start from.",
+            "default": 0,
+            "minimum": 0
+          }
+        },
+        "type": "object",
+        "title": "SearchRequest",
+        "description": "Payload for listing threads."
+      },
+      "Thread": {
+        "properties": {
+          "thread_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Thread Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["idle", "busy", "interrupted", "error"],
+            "title": "Status"
+          },
+          "values": {
+            "type": "object",
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "thread_id",
+          "created_at",
+          "updated_at",
+          "metadata",
+          "status"
+        ],
+        "title": "Thread"
+      },
+      "ThreadCreate": {
+        "properties": {
+          "thread_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Thread Id",
+            "description": "The ID of the thread. If not provided, an ID is generated."
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata for the thread."
+          }
+        },
+        "type": "object",
+        "title": "ThreadCreate",
+        "description": "Payload for creating a thread."
+      },
+      "ThreadPatch": {
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Metadata to merge with existing thread metadata."
+          }
+        },
+        "type": "object",
+        "title": "ThreadPatch",
+        "description": "Payload for creating a thread."
+      },
+      "ThreadStateCheckpointRequest": {
+        "properties": {
+          "checkpoint": {
+            "type": "object",
+            "title": "Checkpoint",
+            "description": "The checkpoint to get the state for."
+          },
+          "subgraphs": {
+            "type": "boolean",
+            "title": "Subgraphs",
+            "description": "Include subgraph states."
+          }
+        },
+        "required": ["checkpoint"],
+        "type": "object",
+        "title": "ThreadStateCheckpointRequest",
+        "description": "Payload for getting the state of a thread at a checkpoint."
+      },
+      "ThreadState": {
+        "properties": {
+          "values": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "object"
+              }
+            ],
+            "title": "Values"
+          },
+          "next": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Next"
+          },
+          "tasks": {
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "Task Id"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Node Name"
+                },
+                "error": {
+                  "type": "string",
+                  "title": "Error"
+                },
+                "interrupts": {
+                  "type": "array",
+                  "items": {}
+                },
+                "checkpoint": {
+                  "type": "object",
+                  "title": "Checkpoint"
+                },
+                "state": {
+                  "$ref": "#/components/schemas/ThreadState"
+                }
+              },
+              "required": ["id", "name"]
+            },
+            "type": "array",
+            "title": "Tasks"
+          },
+          "checkpoint": {
+            "type": "object",
+            "title": "Checkpoint"
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "parent_checkpoint": {
+            "type": "object",
+            "title": "Parent Checkpoint"
+          }
+        },
+        "type": "object",
+        "required": ["values", "next", "checkpoint", "metadata", "created_at"],
+        "title": "ThreadState"
+      },
+      "ThreadStateSearch": {
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "title": "Limit",
+            "description": "The maximum number of states to return.",
+            "default": 10,
+            "maximum": 1000,
+            "minimum": 1
+          },
+          "before": {
+            "title": "Before",
+            "description": "Return states before this checkpoint ID.",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          },
+          "metadata": {
+            "type": "object",
+            "title": "Metadata",
+            "description": "Filter states by metadata key-value pairs."
+          },
+          "checkpoint": {
+            "type": "object",
+            "title": "Checkpoint",
+            "description": "Return states for this subgraph."
+          }
+        },
+        "type": "object",
+        "title": "ThreadStateSearch"
+      },
+      "ThreadStateUpdate": {
+        "properties": {
+          "values": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Values"
+          },
+          "checkpoint": {
+            "type": "object",
+            "title": "Checkpoint"
+          },
+          "as_node": {
+            "type": "string",
+            "title": "As Node"
+          }
+        },
+        "type": "object",
+        "title": "ThreadStateUpdate",
+        "description": "Payload for adding state to a thread."
+      },
+      "ThreadStateUpdateResponse": {
+        "properties": {
+          "checkpoint": {
+            "type": "object",
+            "title": "Checkpoint"
+          }
+        },
+        "type": "object",
+        "title": "ThreadStateUpdateResponse",
+        "description": "Response for adding state to a thread."
+      },
+      "StorePutRequest": {
+        "type": "object",
+        "required": ["namespace", "key", "value"],
+        "properties": {
+          "namespace": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "key": { "type": "string" },
+          "value": { "type": "object" }
+        }
+      },
+      "StoreDeleteRequest": {
+        "type": "object",
+        "required": ["key"],
+        "properties": {
+          "namespace": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "key": { "type": "string" }
+        }
+      },
+      "StoreSearchRequest": {
+        "type": "object",
+        "properties": {
+          "namespace_prefix": {
+            "type": ["array", "null"],
+            "items": { "type": "string" }
+          },
+          "filter": {
+            "type": ["object", "null"],
+            "additionalProperties": true
+          },
+          "limit": { "type": "integer", "default": 10 },
+          "offset": { "type": "integer", "default": 0 }
+        }
+      },
+      "StoreListNamespacesRequest": {
+        "type": "object",
+        "properties": {
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "max_depth": { "type": "integer" },
+          "limit": { "type": "integer", "default": 100 },
+          "offset": { "type": "integer", "default": 0 }
+        }
+      },
+      "Item": {
+        "type": "object",
+        "required": ["namespace", "key", "value", "created_at", "updated_at"],
+        "properties": {
+          "namespace": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "key": { "type": "string" },
+          "value": { "type": "object" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SearchItemsResponse": {
+        "type": "object",
+        "required": ["items"],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Item" }
+          }
+        }
+      },
+      "ListNamespaceResponse": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string" },
+          "message": { "type": "string" }
+        }
+      }
+    },
+    "responses": {
+      "GetItemResponse": {
+        "description": "Successful retrieval of an item.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Item" }
+          }
+        }
+      },
+      "PutItemResponse": {
+        "description": "Item successfully stored or updated.",
+        "content": {}
+      },
+      "DeleteItemResponse": {
+        "description": "Item successfully deleted.",
+        "content": {}
+      },
+      "SearchItemsResponse": {
+        "description": "Successful search operation.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/SearchItemsResponse" }
+          }
+        }
+      },
+      "ListNamespacesResponse": {
+        "description": "Successful retrieval of namespaces.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ListNamespaceResponse" }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "An error occurred.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
